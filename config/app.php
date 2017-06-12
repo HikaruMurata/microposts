@@ -146,6 +146,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         // 追加
         Collective\Html\HtmlServiceProvider::class,
+        
 
     ],
 
