@@ -52,7 +52,7 @@ class User extends Model implements AuthenticatableContract,
     
     public function like()
     {
-        return $this->belongsToMany(User::class, 'user_favorite', 'user_id', 'favorite_id')->withTimestamps();
+        return $this->belongsToMany(Micropost::class, 'user_favorite', 'user_id', 'favorite_id')->withTimestamps();
     }
     
     public function follow($userId)
