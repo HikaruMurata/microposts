@@ -18,6 +18,18 @@
                         {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-xs']) !!}
                     {!! Form::close() !!}
                 @endif
+                 
+                    @if (Auth::user()->is_favorite($micropost->id))
+                        {!! Form::open(['route' => ['users.unfavorite', $micropost->id], 'method' => 'delete']) !!}
+                            {!! Form::submit('Unfavorite', ['class' => "btn btn-danger btn-sm"]) !!}
+                        {!! Form::close() !!}
+                    @else
+                        {!! Form::open(['route' => ['users.favorite', $micropost->id]]) !!}
+                            {!! Form::submit('favorite', ['class' => "btn btn-primary btn-sm"]) !!}
+                        {!! Form::close() !!}
+                    @endif
+                
+
             </div>
         </div>
     </li>

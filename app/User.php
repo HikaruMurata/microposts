@@ -50,6 +50,11 @@ class User extends Model implements AuthenticatableContract,
         return $this->belongsToMany(User::class, 'user_follow', 'follow_id', 'user_id')->withTimestamps();
     }
     
+    public function like()
+    {
+        return $this->belongsToMany(User::class, 'user_favorite', 'user_id', 'favorite_id')->withTimestamps();
+    }
+    
     public function follow($userId)
     {
         // 既にフォローしているかの確認
@@ -83,6 +88,47 @@ class User extends Model implements AuthenticatableContract,
             return false;
         }
     }
+    
+    //課題ここ
+   public function favorite($userId)
+    {
+        // 既にフォローしているかの確認
+        $exist = $this->is_favorite($userId);
+        // 自分自身ではないかの確認
+        $its_me = $this->id == $userId;
+        
+        if ($exist || $its_me) {
+            // 既にフォローしていれば何もしない
+            return false;
+        } else {
+            // 未フォローであればフォローする
+            $this->like()->attach($userId);
+            return true;
+        }
+    }
+    
+    public function unfavorite($userId)
+    {
+        // 既にフォローしているかの確認
+        $exist = $this->is_favorite($userId);
+        // 自分自身ではないかの確認
+        $its_me = $this->id == $userId;
+        
+        if ($exist && !$its_me) {
+            // 既にフォローしていればフォローを外す
+            $this->like()->detach($userId);
+            return true;
+        } else {
+            // 未フォローであれば何もしない
+            return false;
+        }
+    }
+    
+    public function is_favorite($userId) {
+        return $this->like()->where('favorite_id', $userId)->exists();
+    }
+    //favoriteお気に入り課題ここまで
+    
     
     public function is_following($userId) {
         return $this->followings()->where('follow_id', $userId)->exists();
