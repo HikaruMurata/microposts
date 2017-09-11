@@ -39,6 +39,7 @@ class UserFavoriteController extends Controller
     {
         \Auth::user()->favorite($id);
         return redirect()->back();
+        
     }
 
     /**
@@ -97,11 +98,17 @@ class UserFavoriteController extends Controller
         \Auth::user()->unfavorite($id);
         return redirect()->back();
     }
+   
     public function favoritelist($id)
     {
         \Auth::user()->like($id);
         return redirect()->back();
-        
+    }
+   
+    public function favoritebar($id)
+    {
+        \Auth::user()->like($id);
+        return redirect()->back();
     }
     
 }
