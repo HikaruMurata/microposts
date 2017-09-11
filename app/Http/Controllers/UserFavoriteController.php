@@ -105,10 +105,26 @@ class UserFavoriteController extends Controller
         return redirect()->back();
     }
    
-    public function favoritebar($id)
+    /*public function favoritebar($id)
     {
         \Auth::user()->like($id);
         return redirect()->back();
+    }
+    */
+    public function favoritebar($id)
+    {
+        $user = \Auth::user();
+        $microposts = $user->like($id)->orderBy('created_at', 'desc')->paginate(10);
+        //$count_favorite = $user->microposts()->count();
+        
+        $data = [
+            'user' => $user,
+            'microposts' => $microposts,
+        ];
+        
+        $data += $this->counts($user);
+        
+        return view('users.show', $data);
     }
     
 }
